@@ -1,0 +1,15 @@
+.board {
+	border: 1px solid black;
+	flex: 1;
+	margin: 10px;
+	max-width: 400px;
+	border-radius: 5px;
+	background: #eeeeee;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.header {
+	margin-left: 15px;
+}

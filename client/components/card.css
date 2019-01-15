@@ -1,0 +1,14 @@
+.card {
+	border-radius: 5px;
+	box-shadow: 3px rgba(0,0,0,0.7);
+	background-color: white;
+	margin: 10px;
+	flex: 1;
+	display: flex;
+}
+
+.addCard {
+	margin: 10px;
+	flex: 1;
+	display: flex;
+}
