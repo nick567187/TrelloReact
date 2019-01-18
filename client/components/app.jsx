@@ -7,17 +7,20 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: [['To do' , 'yes', 'no'], ['no','card'], ['yes','this']]
+			data: [['To do' , 'yes', 'no'], ['no','card'], ['yes','this']],
+			drag: null
 		}
 		this.addBoard = this.addBoard.bind(this);
 		this.addCard = this.addCard.bind(this);
+		this.mouseDown = this.mouseDown.bind(this);
+		this.mouseUp = this.mouseUp.bind(this);
 	}
 
   addBoard() {
   	var boardName = window.prompt('What do you want to name your board?');
   	this.setState((prevState) => {
       let newData = prevState.data.slice();
-      newData.push([boardName])
+      newData.push([boardName]);
       return {
         data: newData  
       }
@@ -28,15 +31,34 @@ class App extends React.Component {
   	var cardContent = window.prompt('What do you want to name your board?');
     this.setState((prevState) => {
       let newData = prevState.data.slice();
-      newData[board].push(cardContent)
+      newData[board].push(cardContent);
       return {
         data: newData  
       }
   	});     
   }
 
-  moveCard(startBoard, startIndex, targetBoard, targetIndex) {
+  mouseDown(board, card) {
+    this.setState({
+      drag: [board, card]
+    }); 
+  }
 
+  mouseUp(toBoard) {
+  	if (this.state.drag) {
+      this.setState((prevState) => {
+	      let newData = prevState.data.slice();
+	      let fromBoard = prevState.drag[0];
+	      let fromCard = prevState.drag[1];
+	      let toCard = newData[fromBoard].splice(fromCard, 1);
+	      
+	      newData[toBoard].push(toCard);
+	      return {
+	        data: newData,
+	        drag: null
+	      };
+      }); 
+  	}
   }
 
 	render() {
@@ -46,9 +68,9 @@ class App extends React.Component {
 	      <div>Trello Board</div>
 		    <div className={styles.container}>
 		      {this.state.data.map((board, i) => {
-		      	return <Board addCard={this.addCard} data={board} board={i}/>
+		      	return <Board addCard={this.addCard} mouseUp={this.mouseUp} mouseDown={this.mouseDown} data={board} board={i}/>
 		      })}
-			    <Board addBoard={this.addBoard} data={['+ Add another board']}/>    
+			    <Board mouseUp={this.mouseUp} addBoard={this.addBoard} data={['+ Add another board']}/>    
 		    </div>
 	    </div>
 	  );		
